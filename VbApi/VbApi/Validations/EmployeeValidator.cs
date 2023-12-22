@@ -45,8 +45,8 @@ public class EmployeeValidator : AbstractValidator<Employee>
     private bool BeValidHourlySalary(Employee employee, double hourlySalary)
     {
         var dateBeforeThirtyYears = DateTime.Today.AddYears(-30);
-        var isOlderThanThirdyYears = employee.DateOfBirth <= dateBeforeThirtyYears;
-        var isValidSalary = isOlderThanThirdyYears ? hourlySalary >= 200 : hourlySalary >= 50;
+        var isOlderThanThirdYears = employee.DateOfBirth <= dateBeforeThirtyYears;
+        var isValidSalary = isOlderThanThirdYears ? hourlySalary >= 200 : hourlySalary >= 50;
         return isValidSalary;
     }
 
