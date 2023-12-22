@@ -1,21 +1,21 @@
-using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
+using VbApi.Validations;
 
 namespace VbApi.Controllers;
 
 public class Staff
 {
-    [Required]
-    [StringLength(maximumLength: 250, MinimumLength = 10)]
+    // [Required]
+    // [StringLength(maximumLength: 250, MinimumLength = 10)]
     public string? Name { get; set; }
 
-    [EmailAddress(ErrorMessage = "Email address is not valid.")]
+    // [EmailAddress(ErrorMessage = "Email address is not valid.")]
     public string? Email { get; set; }
 
-    [Phone(ErrorMessage = "Phone is not valid.")]
+    // [Phone(ErrorMessage = "Phone is not valid.")]
     public string? Phone { get; set; }
 
-    [Range(minimum: 30, maximum: 400, ErrorMessage = "Hourly salary does not fall within allowed range.")]
+    // [Range(minimum: 30, maximum: 400, ErrorMessage = "Hourly salary does not fall within allowed range.")]
     public decimal? HourlySalary { get; set; }
 }
 
@@ -28,8 +28,15 @@ public class StaffController : ControllerBase
     }
 
     [HttpPost]
-    public Staff Post([FromBody] Staff value)
+    public IActionResult Post([FromBody] Staff staff)
     {
-        return value;
+        var validator = new StaffValidator();
+        var validationResult = validator.Validate(staff);
+        if (!validationResult.IsValid)
+        {
+            return BadRequest(validationResult.Errors.Select(x => x.ErrorMessage));
+        }
+
+        return Ok(staff);
     }
 }
